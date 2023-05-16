@@ -11,7 +11,7 @@ contract FusionDetailsMock {
     using AddressLib for Address;
     using FusionDetails for bytes;
 
-    function parse(bytes calldata details, address resolver) external view returns(
+    function parse(bytes calldata details, address resolver, bytes calldata whitelist) external view returns(
         uint256 detailsLength,
         address takingFeeReceiver,
         uint256 takingFeeAmount,
@@ -20,10 +20,10 @@ contract FusionDetailsMock {
         bool isValidResolver
     ) {
         detailsLength = details.detailsLength();
-        takingFeeReceiver = details.takingFee().get();
-        takingFeeAmount = details.takingFee().getUint32(160);
+        takingFeeReceiver = details.takingFeeData().get();
+        takingFeeAmount = details.takingFeeData().getUint32(160);
         bump = details.rateBump();
         resolverFee = details.resolverFee();
-        isValidResolver = details.checkResolver(resolver);
+        isValidResolver = details.checkResolver(resolver, whitelist);
     }
 }
